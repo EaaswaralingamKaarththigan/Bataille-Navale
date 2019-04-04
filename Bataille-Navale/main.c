@@ -17,6 +17,17 @@ char tableau [8][8]={
         '-','-','-','-','-','-','-','-',
 };
 
+int tableaumodel [8][8]={
+        3,0,0,2,2,0,0,0,                         // 3: 3 parties
+        3,0,0,0,0,0,0,0,                         // 4: 3 parties
+        3,0,5,5,5,5,5,0,                         // 1: 2 parties
+        0,0,0,0,0,0,0,0,                         // 2: 2 parties
+        0,0,0,0,0,0,0,0,                         // 6: 2 parties
+        0,0,0,0,0,1,1,0,
+        0,4,4,4,0,0,0,0,
+        0,0,0,0,0,6,6,0
+};
+
 int tableau3 [8][8]={
         3,0,0,2,2,0,0,0,                         // 3: 3 parties
         3,0,0,0,0,0,0,0,                         // 4: 3 parties
@@ -28,11 +39,19 @@ int tableau3 [8][8]={
         0,0,0,0,0,6,6,0
 };
 
-int menu = 0,x, tableauachoix, ligne, jouer, aide, score, quitter, liste, colonne, choixcol, menujouer, choixligne, col, lig, pointdevie = 0;
+int menu = 0,x, tableauachoix, ligne, jouer, aide, score, quitter, liste, colonne, choixcol, menujouer, choixligne, col, lig, pointdevie = 0, scorecoup = 0, scorefinal;
 char nom;
 char prenom;
 
+int stockerScore(){
+    FILE * scorefinal;
 
+    scorefinal = fopen("Score.txt", "w");
+    fprintf(scorefinal,"%d", scorecoup);
+    fputs("\n", scorefinal);
+    fclose(scorefinal);
+
+}
 
 int bienvenue(){
 
@@ -60,6 +79,7 @@ int commencer() {
         scanf("%d", &choixligne);
         printf("\nVeuillez choisir une colonne :\n\n");                   // choix colonne
         scanf("%d", &choixcol);
+        scorecoup++;
         choixligne = choixligne - 1;
         choixcol = choixcol - 1;
 
@@ -134,23 +154,33 @@ int commencer() {
             tableau[choixligne][choixcol]= *"X";
             bateau6++;
             if (bateau6 == 2){
-                printf("coule");
+                printf("Vous avez coule un bateau");
+                tableauAffiche();
             }
         }
 
         if(pointdevie >= 3){
-            printf("\n\nGAGNER");
+            for (int i = 0; i <8 ; ++i) {
+                for (int j = 0; j < 8; ++j) {
+                    tableau3[i][j]=tableaumodel[i][j];
+                }
+            }
+
+            tableauAffiche();
+
+                    printf("\n\nGAGNER\n\n");
             system("pause");
             for (int i = 0; i <8 ; ++i) {
                 printf("\n");
                 for (int j = 0; j < 8; ++j) {
                     tableau[i][j]=*"-";
-
+                    pointdevie = 0;
+                    stockerScore();
                 }
 
             }
-
             intro();
+
         }
 
 
