@@ -45,12 +45,16 @@ char prenom;
 
 int stockerScore(){
     FILE * scorefinal;
+    printf("test");
 
-    scorefinal = fopen("Score.txt", "w");
+    scorefinal = fopen("Score.txt","a+");
     fprintf(scorefinal,"%d", scorecoup);
-    fputs("\n", scorefinal);
     fclose(scorefinal);
 
+}
+
+int scoreafficher(){
+    printf("%d", scorefinal);
 }
 
 int bienvenue(){
@@ -75,6 +79,7 @@ int commencer() {
     printf("\n");
 
     while (pointdevie <= 17) {
+
         printf("\nVeuillez choisir une ligne :\n\n");                     // choix ligne
         scanf("%d", &choixligne);
         printf("\nVeuillez choisir une colonne :\n\n");                   // choix colonne
@@ -82,6 +87,7 @@ int commencer() {
         scorecoup++;
         choixligne = choixligne - 1;
         choixcol = choixcol - 1;
+
 
         if(choixligne >8){
             printf("Choisissez un numero valable !!!\n\n");
@@ -169,13 +175,14 @@ int commencer() {
             tableauAffiche();
 
                     printf("\n\nGAGNER\n\n");
+                    stockerScore();
+                    scorecoup = 0;
             system("pause");
             for (int i = 0; i <8 ; ++i) {
                 printf("\n");
                 for (int j = 0; j < 8; ++j) {
                     tableau[i][j]=*"-";
                     pointdevie = 0;
-                    stockerScore();
                 }
 
             }
@@ -192,6 +199,7 @@ int commencer() {
 
         }
         tableauAffiche();
+
     }
 }
 
@@ -224,7 +232,8 @@ int sousmenujouer(){
         case 2:
             grille();
             break;
-        case 3:break;
+        case 3:sousmenu();
+            break;
     }
 }                                           // Les différentes option de sous-menu "jouer"
 
@@ -247,6 +256,7 @@ int sousmenu(){
 
         case 3:
             printf("Score");
+            scoreafficher();
             break;
 
         case 4:
@@ -257,6 +267,19 @@ int sousmenu(){
 }                                                // Le sous-menu
 
 int intro(){                                                       // Le menu
+    FILE* SCORE;
+    printf("Entrez votre nom : ");
+    scanf("%s", &nom);
+
+    SCORE = fopen("Score.txt","a+");
+
+        printf("test");
+        fprintf(SCORE,"%s""\n",&nom);
+        fclose(SCORE);
+
+
+    fprintf(scorefinal,"\n""%s",&nom);
+
 
     printf("Choisissez un numero de la liste ci-dessous :\n\n\n");
 
@@ -271,7 +294,8 @@ int intro(){                                                       // Le menu
     sousmenu();
 
 }
-void tableauAffiche(){
+
+int tableauAffiche(){
     printf("\n");
     for (ligne = 0; ligne < 8; ligne++) {
         for (colonne = 0; colonne < 8; colonne++) {
@@ -282,8 +306,6 @@ void tableauAffiche(){
     printf("\n");
 
 }
-
-
 
 
 int main() {
